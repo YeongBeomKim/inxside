@@ -1,13 +1,12 @@
 import React from 'react';
-import styles from './test.scss';
-
-console.log(styles);
+import PageTemplate from '../components/base/PageTemplate';
+import Header from '../components/base/Header';
 
 const Home = ()=>{
     return (
-        <div className={styles.test}>
-            Home!!dafadsf
-        </div>
+        <PageTemplate header={<Header/>}>
+            215125
+        </PageTemplate>
     );
 };
 

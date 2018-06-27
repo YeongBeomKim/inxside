@@ -247,7 +247,7 @@ module.exports = {
               {
                 loader: require.resolve('sass-loader'),
                 options: {
-                  includePaths: [paths.globalStyles]
+                  includePaths: [paths.styles],
                 }
               }
             ],
