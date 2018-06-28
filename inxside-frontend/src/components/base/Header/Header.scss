@@ -1,5 +1,39 @@
-.Header{
-    background-color: black;
+@import 'utils';
+
+.header{
+    background: material-color('grey','100');
     width: 100%;
-    height: 500px;
+    height: 8.5rem;
+    .logo{
+        color: black;
+        font-size: 2rem;
+        position: relative;
+        display: flex;
+        padding-top: 2rem;
+        margin-bottom: 1rem;
+    }
+    .header-nav{
+        height: 2rem;
+        padding-top: 0.5rem;
+        display: flex;
+        .left{
+            .nav-item{
+                width: 2rem;
+                margin-right: 2rem;
+                &:hover{
+                    color: material-color("red","100");
+                }
+            } 
+        }
+        .right{
+            margin-left: auto;
+            .nav-item{
+                width: 2rem;
+                margin-left: 2rem;
+                &:hover{
+                    color: material-color("red","100");
+                }
+            }
+        }
+    }
 }
