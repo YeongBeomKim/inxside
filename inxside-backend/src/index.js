@@ -21,7 +21,7 @@ app.use(compress());
 app.use(bodyParser());
 
 const router = new Router();
-// router.use('/api', api.routes());
+router.use('/api', api.routes());
 
 app.use(router.routes());
 app.use(router.allowedMethods());

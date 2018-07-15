@@ -1,0 +1,1 @@
+exports.Painting = require('./Painting');
