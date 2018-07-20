@@ -13,13 +13,8 @@ Painting.statics.setPainting =  function(id) {
     return this.findById({_id: id}).exec();
 };
 Painting.statics.setPaintings = function(){
-    this.find({},function(err,paintings){
-        paintings.reduce(function(paintingMap, item){
-            paintingMap[item.id] = item;
-            return paintingMap;
-        },{});
-    });
-}
+    return this.find({}).exec();
+};
 
 
 module.exports = mongoose.model('Painting',Painting);

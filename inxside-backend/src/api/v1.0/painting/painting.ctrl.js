@@ -4,23 +4,25 @@ const mongoose = 'mongoose';
 const { validateSchema } = require('lib/common');
 
 const { Painting } = require('db/models');
-//index
-exports.parsePainting = async (ctx) => {
-    const paintings = await Painting.find({}).exec();
-    ctx.body = paintings;
+
+exports.parsePaintings = async (ctx) => {
     try {
+        const paintings = await Painting.setPaintings();
+        ctx.body = paintings;
     } catch(e) {
         ctx.throw(500,e);
     }
 }
-//show
-exports.showPainting = async (ctx) => {
-    const {id} = ctx.params;
-
-    const painting = await Painting.findById(id).exec();
-    console.log(painting);
+exports.setPainting = async (ctx) => {
+    try{
+        const {id} = ctx.params;
+        const painting = await Painting.setPainting(id);
+        ctx.body = painting;
+    } catch(e) {
+        ctx.throw(500,e);
+    }
+    
 }
-//create
 exports.uploadPainting = async (ctx) => {
     let {
         title,
@@ -56,7 +58,6 @@ exports.uploadPainting = async (ctx) => {
         ctx.throw(500,e);
     }
 };
-//edit
 exports.editPainting = async (ctx) => {
     let {
         title,
