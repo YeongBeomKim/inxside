@@ -1,4 +1,3 @@
-//@flow
 const Joi = require('joi');
 // validates schema, return 400 error if not valid
 async function validateSchema(ctx, schema){

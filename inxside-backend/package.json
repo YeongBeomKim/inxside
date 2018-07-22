@@ -6,6 +6,7 @@
   "dependencies": {
     "dotenv": "^6.0.0",
     "eslint": "^4.19.1",
+    "filesize": "^3.6.1",
     "joi": "^13.4.0",
     "joi-date-extensions": "^1.2.0",
     "jsonwebtoken": "^8.3.0",
