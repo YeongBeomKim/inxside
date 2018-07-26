@@ -1,0 +1,42 @@
+@import 'utils';
+
+.PaintingWriteHeader {
+    width: 100%;
+    height: 10rem;
+    .header-text{
+        font-size: 2rem;
+        align-items: center;
+        flex-direction: column;
+        padding-top: 3rem;
+        padding-bottom: 2rem;
+    };
+    .form-container{
+        display: flex;
+        .form-image{
+            background: material-color('grey','100');
+            flex: 1;
+        }
+        .form-group {
+            margin: 1rem;
+            flex: 1;
+            input {
+                width: 85%;
+                background: none;
+                outline: 0;
+                border: none;
+                font-size: 1.5rem;
+                color: black;
+                margin:2rem;
+                &::placeholder {
+                color: material-color('grey','400');
+                }
+            }
+        }
+    }
+    .submit-btn {
+        width: 10rem;
+        height: 3rem;
+        float: right;
+    }
+    
+}

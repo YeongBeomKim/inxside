@@ -1,17 +1,12 @@
-// @flow
-import React, {type Node} from 'react';
+import React from 'react';
 import styles from './PageTemplate.scss';
 
-type Props = {
-    header: Node,
-    children: Node
-};
 
-const PageTemplate = ({ header, children }: Props) => {
+const PageTemplate = ({ header, children }) => {
     return(
         <div className="PageTemplate">
             {header}
-            <main>{children}</main>
+            <main className="rest">{children}</main>
         </div>
     )
 }

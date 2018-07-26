@@ -100,7 +100,7 @@ exports.editPainting = async (ctx) => {
     }
 }
 //destroy
-exports.deletePaining = async (ctx) => {
+exports.deletePainting = async (ctx) => {
     const {id} = ctx.params;
     try {
         await Painting.findByIdAndDelete(id);
