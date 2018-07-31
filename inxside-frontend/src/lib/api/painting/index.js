@@ -1,4 +1,4 @@
-import  axios from 'axios';
+import  axios from '../defaultClient';
 
 export const uploadPainting = (payload) => axios.post('/api/v1.0/painting', payload);
 

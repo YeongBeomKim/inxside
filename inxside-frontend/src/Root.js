@@ -6,7 +6,7 @@ import store from './store';
 
 const Root = () => {
     return (
-        <Provider>
+        <Provider store={store}>
             <BrowserRouter>
                 <App />
             </BrowserRouter>  

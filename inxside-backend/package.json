@@ -6,6 +6,7 @@
   "dependencies": {
     "aws-sdk": "^2.279.1",
     "axios": "^0.18.0",
+    "cors": "^2.8.4",
     "dotenv": "^6.0.0",
     "eslint": "^4.19.1",
     "filesize": "^3.6.1",

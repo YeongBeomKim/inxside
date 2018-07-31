@@ -1,7 +1,11 @@
 import { createAction, handleActions } from 'redux-actions';
 import {Map} from 'immutable';
+import produce from 'immer';
 import * as PaintingAPI from 'lib/api/painting';
 import * as FilesAPI from 'lib/api/files';
+import { applyPenders } from 'lib/common';
+
+import { pender } from 'redux-pender';
 
 //ACTION TYPE
 const UPLOAD_PAINTING = 'painting/UPLOAD_PAINTING';
@@ -13,19 +17,24 @@ export const actionCreators = {
 
 //INITIAL STATE
 const initialState = Map({
-    title: null,
-    description: null,
-    paintingUri: null,
-    date: null
+    title: '',
+    description: '',
+    paintingUri: '',
+    date: '',
 })
 
 // REDUCER
 export default handleActions({
-    [UPLOAD_PAINTING]: (state, action) => {
-        const { title, description, paintingUri, date} = action.payload;
-        return state.set('title', title)
-                    .set('description',description)
-                    .set('paintingUri',paintingUri)
-                    .set('date',date)
-    },
-}, initialState)
+    ...pender({
+        type: UPLOAD_PAINTING,
+        onSuccess: (state,action) => {
+            const {title, description, paintingUri, date} = action.payload;
+            return produce(state,(draft) => {
+                draft.title = title;
+                draft.description = description;
+                draft.paintingUri = paintingUri;
+                draft.date = date;
+            });
+        }
+    })
+}, initialState);

@@ -9,6 +9,7 @@ class PaintingWriteHeader extends Component {
             title,
             description,
             date,
+            onSubmit,
         } = this.props;
         return(
             <div className="PaintingWriteHeader">
@@ -22,7 +23,7 @@ class PaintingWriteHeader extends Component {
                             <input placeholder="제작 날자" value={date}/>
                         </div>
                     </div>
-                    <button className="submit-btn">저장</button>
+                    <button className="submit-btn" onClick={onSubmit} >저장</button>
                 </Responsive>
             </div>
         )
