@@ -6,4 +6,4 @@ export const createSignedUrl = ({painting_id, filename}) => axios.post('/api/v1.
 
 export const upload = ({files,fields}) => axios.post('/api/v1.0/files/upload',{
     files, fields
-});
+}); 
