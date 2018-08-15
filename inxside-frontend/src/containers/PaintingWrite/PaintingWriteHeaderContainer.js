@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-
 import {PaintingWriteActions} from 'store/actionCreators';
-
+import axios from 'axios';
 import PaintingWriteHeader from 'components/PaintingWrite/PaintingWriteHeader';
+import PaintingWriteConfigureImage from 'components/PaintingWrite/PaintingWriteConfigureImage';
 
 class PaintingWriteHeaderContainer extends Component {
     onChangeTitle = (e) => {
@@ -19,7 +19,6 @@ class PaintingWriteHeaderContainer extends Component {
             field: 'description',
             value,
         });
-        console.log(this.props);
     }
     onChangeDate = (e) => {
         const { value } = e.target;
@@ -29,31 +28,93 @@ class PaintingWriteHeaderContainer extends Component {
         });
     }
     onSubmit = async () => {
-        const {title, description, paintingUri, date} = this.props;
+        const {title, description, paintingUri, date, paintingData} = this.props;
         try {
-            PaintingWriteActions.uploadPainting({
-                title,
-                description,
-                paintingUri,
-                date
-            });
+            if(!paintingData){
+                await PaintingWriteActions.uploadPainting({
+                    title,
+                    description,
+                    paintingUri,
+                    date,
+                    is_temp: false
+                });
+            } else {
+                await PaintingWriteActions.updatePainting({
+                    id: paintingData._id,
+                    title,
+                    description,
+                    paintingUri,
+                    date,
+                    is_temp: false
+                })
+            }
         } catch (e) {
             console.log(e);
         }
 
     }
+    uploadImage = async (file) => {
+        if(!this.props.paintingData){
+            const {title, description, paintingUri, date} = this.props;
+            try{
+                await PaintingWriteActions.uploadPainting({
+                    title,
+                    description,
+                    paintingUri,
+                    date,
+                    is_temp: true
+                });
+            } catch(e){
+                console.log(e);
+            }
+        };
+        if(!this.props.paintingData) return;
+        const { _id } = this.props.paintingData
+        try{
+            await PaintingWriteActions.createUploadUrl({paintingId: _id, filename: file.name});
+            PaintingWriteActions.setUploadStatus({uploading: true});
+            if(!this.props.uploadUrl) return;
+            await axios.put(this.props.uploadUrl, file, {
+                header: {
+                    'Content-Type': file.type,
+                },
+                withCredentials: false,
+                onUploadProgress: (e) => {
+                    if (window.nanobar) {
+                      window.nanobar.go(e.loaded / e.total * 100);
+                    }
+                  },
+            });
+            if(!this.props.imagePath) return;
+            PaintingWriteActions.setImageUri(`https://s3.ap-northeast-2.amazonaws.com/inxside/${this.props.imagePath}`);
+        } catch(e){
+            console.log(e);
+        }
+    }
+    onUploadClick = async () => {
+        const upload = document.createElement('input');
+        upload.type = 'file';
+        upload.onchange = (e) => {
+            upload.file = e.path;
+            if(!upload.file) return;
+            const file = upload.files[0];
+            this.uploadImage(file);
+        };
+        upload.click();
+    };
     render() {
         const {
             onSubmit,
             onChangeTitle,
             onChangeDescription,
             onChangeDate,
+            onUploadClick,
         } = this; 
         const {
             title,
             description,
             date,
-            paintingUri
+            paintingUri,
         } = this.props;
         return(
             <PaintingWriteHeader 
@@ -64,7 +125,13 @@ class PaintingWriteHeaderContainer extends Component {
                 title = { title }
                 description = { description }
                 date = { date }
-                paintingUri = { paintingUri } 
+                paintingUri = { paintingUri }
+                configureImage = {
+                    <PaintingWriteConfigureImage 
+                        onUploadClick = {onUploadClick}
+                        paintingUri = {paintingUri}
+                    />
+                }
             />
         )
     }
@@ -75,7 +142,10 @@ export default connect(
         title: state.paintingWrite.get('title'),
         description: state.paintingWrite.get('description'),
         paintingUri: state.paintingWrite.get('paintingUri'),
-        date: state.paintingWrite.get('date')
+        date: state.paintingWrite.get('date'),
+        paintingData: state.paintingWrite.get('paintingData'),
+        uploadUrl: state.paintingWrite.getIn(['upload','uploadUrl']),
+        imagePath: state.paintingWrite.getIn(['upload','imagePath']),
     }),
     ()=>({}),
 )(PaintingWriteHeaderContainer);

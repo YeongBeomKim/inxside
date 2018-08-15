@@ -10,14 +10,17 @@ const PaintingWriteHeader = ({
     onSubmit,
     onChangeTitle,
     onChangeDescription,
-    onChangeDate
+    onChangeDate,
+    configureImage
 }) => {
     return(
         <div className="PaintingWriteHeader">
             <Responsive>
                 <div className="header-text">새로운 미술 작품 등록하기</div>
                 <div className="form-container">
-                    <div className="form-image"></div>
+                    <div className="form-image">
+                        {configureImage}
+                    </div>
                     <div className="form-group">
                         <input placeholder="작품 제목" autoFocus onChange={onChangeTitle} value={title} field='title' />
                         <input placeholder="작품 설명" onChange={onChangeDescription} value={description} />
