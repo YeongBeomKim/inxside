@@ -28,23 +28,25 @@ exports.uploadPainting = async (ctx) => {
         title,
         description,
         paintingUri,
-        date
+        date,
+        is_temp
     } = ctx.request.body;
     
     const schema = Joi.object({
         title: Joi.string().required().min(1).max(120),
         description: Joi.string().required().min(1),
         paintingUri: Joi.string().uri().allow(null),
-        date: Joi.string().required()
+        date: Joi.string().required(),
     });
 
-    if(!validateSchema(ctx, schema)) return;
+    // if(!validateSchema(ctx, schema)) return;
     try{
         const painting = new Painting({
             title,
             description,
             paintingUri,
-            date
+            date,
+            is_temp
         });
         await painting.save();
         ctx.body = {
@@ -53,6 +55,7 @@ exports.uploadPainting = async (ctx) => {
             description,
             paintingUri,
             date,
+            is_temp
         };
     } catch(e) {
         ctx.throw(500,e);
@@ -63,7 +66,8 @@ exports.editPainting = async (ctx) => {
         title,
         description,
         paintingUri,
-        date
+        date,
+        is_temp
     } = ctx.request.body;
 
     const {id} = ctx.params;
@@ -74,14 +78,15 @@ exports.editPainting = async (ctx) => {
         date: Joi.string().required()
     });
 
-    if(!validateSchema(ctx, schema)) return;
+    // if(!validateSchema(ctx, schema)) return;
 
     try{
         painting = await Painting.findByIdAndUpdate(id,{
             title: title,
             description: description,
             paintingUri: paintingUri,
-            date: date
+            date: date,
+            is_temp: is_temp
         }).exec();
         if(!painting){
             ctx.status = 404; //Not Found
@@ -94,6 +99,7 @@ exports.editPainting = async (ctx) => {
             description,
             paintingUri,
             date,
+            is_temp
         };
     } catch(e) {
         ctx.throw(500,e);

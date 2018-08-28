@@ -6,7 +6,8 @@ const Painting = new Schema({
     title: String,
     description: String,
     paintingUri: String,
-    date: String
+    date: String,
+    is_temp: Boolean,
 });
 
 Painting.statics.setPainting =  function(id) {

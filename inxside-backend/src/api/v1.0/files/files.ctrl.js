@@ -7,6 +7,7 @@ const downloadImage = require('lib/downloadImage')
 const mimeTypes = require('mime-types');
 
 const s3 = new AWS.S3({ region: 'ap-northeast-2', signatureVersion: 'v4' });
+
 exports.createSignedUrl = async (ctx) => {
   const { painting_id, filename } = (ctx.request.body);
   //CHECK PAINTING ID EXIST
@@ -47,6 +48,7 @@ exports.createSignedUrl = async (ctx) => {
     const imagePath = `painting-images/${paintingImage.id}/${filename}`;
     paintingImage.path = imagePath;
     await paintingImage.save();
+
     const url = await s3.getSignedUrl('putObject',{
       Bucket: 'inxside',
       Key: imagePath,
@@ -57,6 +59,7 @@ exports.createSignedUrl = async (ctx) => {
       imagePath,
       id: paintingImage.id,
     };
+    console.log(ctx.body);
   } catch(e){
     ctx.throw(500,e);
   };
@@ -74,7 +77,7 @@ exports.upload = async (ctx) => {
     return;
   };
   const { painting_id } = fields;
-  if(!post_id){
+  if(!painting_id){
     ctx.status = 400;
     ctx.body = {
       name: 'PAINTING_ID_NOT_GIVEN',
@@ -126,7 +129,7 @@ exports.upload = async (ctx) => {
     paintingImage.path = imagePath;
     const read = fs.createReadStream(image.path);
     const response = await s3
-      .uploda({
+      .upload({
         Bucket: 'inxside',
         Key: imagePath,
         Body: read,

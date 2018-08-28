@@ -1,7 +1,22 @@
 @import 'utils';
 
 .PaintingWriteConfigureImage {
-    text-align: center;
-    font-size: 2rem;
-    margin-top: 8rem;
+    .image-area{
+        width:100%;
+        position: relative;
+        padding-top: 52.63%;
+        .full{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width:100%;
+        }
+        .button-group{
+        }
+    }
+    .upload-button{
+        font-size: 2rem;
+        margin-top: 8rem;
+        margin-left: 8.5rem;
+    }
 }

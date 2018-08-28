@@ -1,21 +1,27 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 import './PaintingWriteConfigureImage.scss';
 
 const PaintingWriteConfigureImage = ({
     onUploadClick,
-    paintingUri
+    paintingUri,
+    onClearImage
 }) => {
     return (
         <div className="PaintingWriteConfigureImage">
             {paintingUri ? (
-                <div>
-                    <img src={paintingUri} alt="Painting"/>
-                </div>
+                <Fragment>
+                    <div className="image-area">
+                        <img className="full" src={paintingUri} alt="Painting"/>
+                    </div>
+                    <div className="button-group">
+                        <button onClick={onClearImage}>삭제</button>
+                        <button onClick={onUploadClick}>수정</button>
+                    </div>
+                </Fragment>
+
             ) : (
-                <div>
-                    <button onClick={onUploadClick}>이미지 업로드</button>
-                </div>
+                <button className="upload-button" onClick={onUploadClick}>이미지 업로드</button>
             )}
         </div>
     );

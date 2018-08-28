@@ -11,7 +11,8 @@ const PaintingWriteHeader = ({
     onChangeTitle,
     onChangeDescription,
     onChangeDate,
-    configureImage
+    configureImage,
+    writeContinueModalBox,
 }) => {
     return(
         <div className="PaintingWriteHeader">
@@ -27,6 +28,7 @@ const PaintingWriteHeader = ({
                         <input placeholder="제작 날자" onChange={onChangeDate} value={date}/>
                     </div>
                 </div>
+                {writeContinueModalBox}
                 <button className="submit-btn" onClick={onSubmit} >저장</button>
             </Responsive>
         </div>

@@ -4,6 +4,7 @@ import {PaintingWriteActions} from 'store/actionCreators';
 import axios from 'axios';
 import PaintingWriteHeader from 'components/PaintingWrite/PaintingWriteHeader';
 import PaintingWriteConfigureImage from 'components/PaintingWrite/PaintingWriteConfigureImage';
+import WriteContinueModalBox from 'components/PaintingWrite/WriteContinueModalBox';
 
 class PaintingWriteHeaderContainer extends Component {
     onChangeTitle = (e) => {
@@ -28,7 +29,7 @@ class PaintingWriteHeaderContainer extends Component {
         });
     }
     onSubmit = async () => {
-        const {title, description, paintingUri, date, paintingData} = this.props;
+        const {title, description, paintingUri, date, paintingData, continueStatus } = this.props;
         try {
             if(!paintingData){
                 await PaintingWriteActions.uploadPainting({
@@ -46,12 +47,12 @@ class PaintingWriteHeaderContainer extends Component {
                     paintingUri,
                     date,
                     is_temp: false
-                })
+                });
             }
+            PaintingWriteActions.changeWriteContinue(continueStatus);
         } catch (e) {
             console.log(e);
         }
-
     }
     uploadImage = async (file) => {
         if(!this.props.paintingData){
@@ -102,6 +103,11 @@ class PaintingWriteHeaderContainer extends Component {
         };
         upload.click();
     };
+    onClearImage = async () => {
+        PaintingWriteActions.setImageUri(null);
+    };
+    onRedirectToPainting = async () => {
+    };
     render() {
         const {
             onSubmit,
@@ -109,12 +115,15 @@ class PaintingWriteHeaderContainer extends Component {
             onChangeDescription,
             onChangeDate,
             onUploadClick,
+            onClearImage,
+            onRedirectToPainting
         } = this; 
         const {
             title,
             description,
             date,
             paintingUri,
+            writeContinueStatus
         } = this.props;
         return(
             <PaintingWriteHeader 
@@ -129,8 +138,16 @@ class PaintingWriteHeaderContainer extends Component {
                 configureImage = {
                     <PaintingWriteConfigureImage 
                         onUploadClick = {onUploadClick}
+                        onClearImage = {onClearImage}
                         paintingUri = {paintingUri}
                     />
+                }
+                writeContinueModalBox = {
+                    writeContinueStatus && (
+                        <WriteContinueModalBox
+                            onRedirectToPainting = {onRedirectToPainting}
+                        />
+                    )
                 }
             />
         )
@@ -146,6 +163,7 @@ export default connect(
         paintingData: state.paintingWrite.get('paintingData'),
         uploadUrl: state.paintingWrite.getIn(['upload','uploadUrl']),
         imagePath: state.paintingWrite.getIn(['upload','imagePath']),
+        writeContinueStatus: state.paintingWrite.get('writeContinueStatus')
     }),
     ()=>({}),
 )(PaintingWriteHeaderContainer);

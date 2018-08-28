@@ -13,7 +13,6 @@ new AWS.Config({
   "region": "ap-northeast-2"
 })
 
-
 const version = {
     '1.0': require('./v1.0')
 };

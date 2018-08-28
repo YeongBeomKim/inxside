@@ -6,12 +6,13 @@ import * as FilesAPI from 'lib/api/files';
 import { pender } from 'redux-pender';
 
 //ACTION TYPE
-const UPLOAD_PAINTING = 'painting/UPLOAD_PAINTING';
-const EDIT_FIELD = 'painting/EDIT_FIELD';
-const CREATE_UPLOAD_URL = 'painting/CREATE_UPLOAD_URL';
-const UPDATE_PAINTING = 'painting/UPDATE_PAINTING';
-const SET_UPLOAD_STATUS = 'painting/SET_UPLOAD_STATUS';
-const SET_IMAGE_URI = 'painting/SET_IMAGE_URI';
+const UPLOAD_PAINTING = 'paintingWrite/UPLOAD_PAINTING';
+const EDIT_FIELD = 'paintingWrite/EDIT_FIELD';
+const CREATE_UPLOAD_URL = 'paintingWrite/CREATE_UPLOAD_URL';
+const UPDATE_PAINTING = 'paintingWrite/UPDATE_PAINTING';
+const SET_UPLOAD_STATUS = 'paintingWrite/SET_UPLOAD_STATUS';
+const SET_IMAGE_URI = 'paintingWrite/SET_IMAGE_URI';
+const CHANGE_WRITE_CONTINUE = 'paintingWrite/CHANGE_WRITE_CONTINUE';
 //ACTION CREATOR
 export const actionCreators = {
     uploadPainting: createAction(UPLOAD_PAINTING, PaintingAPI.uploadPainting),
@@ -19,7 +20,8 @@ export const actionCreators = {
     createUploadUrl: createAction(CREATE_UPLOAD_URL, FilesAPI.createSignedUrl),
     updatePainting: createAction(UPDATE_PAINTING, PaintingAPI.editPainting),
     setUploadStatus: createAction(SET_UPLOAD_STATUS, (uploading) => uploading),
-    setImageUri: createAction(SET_IMAGE_URI)
+    setImageUri: createAction(SET_IMAGE_URI),
+    changeWriteContinue: createAction(CHANGE_WRITE_CONTINUE)
 }
 
 //INITIAL STATE
@@ -35,6 +37,7 @@ const initialState = Map({
         id: null,
         uploading: false
     }),
+    writeContinueStatus: false,
 })
 
 // REDUCER
@@ -64,6 +67,10 @@ export default handleActions({
     [SET_IMAGE_URI]: (state,action) => {
         const paintingUri = action.payload;
         return state.set('paintingUri', paintingUri);
+    },
+    [CHANGE_WRITE_CONTINUE]: (state,action) => {
+        const writeContinueStatus = !action.payload;
+        return state.set('writeContinueStatus', writeContinueStatus);
     },
     ...pender({
         type: CREATE_UPLOAD_URL,
