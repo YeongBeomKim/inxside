@@ -1,0 +1,10 @@
+@import "utils";
+
+.PaintingsList {
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  padding-top: 1rem;
+  margin-left: 5rem;
+  margin-right: 5rem;
+}
